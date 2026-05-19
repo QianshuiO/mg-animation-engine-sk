@@ -2,6 +2,8 @@
 
 If the user asks you to clone and run this repository, do not stop after cloning.
 
+## Required Run Command
+
 Run this command from the repository root on Windows:
 
 ```powershell
@@ -10,33 +12,26 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1
 
 The installer copies the skill into `%USERPROFILE%\.codex\skills\mg-animation-engine-sk`, checks Python dependencies, runs a small Excel smoke test, searches the bundled encrypted MG library, and prints the launch screen.
 
-If the installer succeeds, treat the MG animation engine as started and reply with this launch screen:
+If `git clone` hangs or fails because of HTTPS credentials, TLS, or pack download timeouts, do not retry indefinitely. Use the GitHub file/content API, an available GitHub connector, or a repository archive fallback to materialize the repository contents, then run the same installer command from the materialized root. The installer validates that required paths are present before copying the skill.
 
-```text
-▛▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▜
-   ᕙ(⇀‸↼‶)ᕗ  MG MODE
-▙▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▟
+## After Install
 
-ᕦ(ò_óˇ)ᕤ  MG动画引擎启动
-作者：Qianshui
-
-把你的文案发我
-```
+If the installer succeeds, treat the MG animation engine as started. Reply to the user with the launch screen printed by the installer, then wait for the user's copy.
 
 Do not ask the user for an output folder. Excel files default to:
 
 ```text
-Desktop\MG动画脚本输出\脚本在这里
+Desktop\MG animation script output\scripts here
 ```
+
+The actual installer uses the Chinese folder names for that default path.
 
 After the user sends copy, use this skill and the bundled encrypted `db` folder to generate an Excel file with only these three columns:
 
 ```text
-文案 | 分镜 | AI提示词
+copy | storyboard | AI prompt
 ```
 
-After writing the Excel file, tell the user the clickable Excel path and end with:
+The actual Excel writer uses the Chinese column names.
 
-```text
-把你的文案发我
-```
+After writing the Excel file, tell the user the clickable Excel path and ask them to send the next piece of copy.
