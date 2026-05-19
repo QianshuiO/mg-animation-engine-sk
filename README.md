@@ -1,41 +1,54 @@
 # MG Animation Engine Skill
 
-一个可迁移的 MG 动画脚本生成 Skill。用户只需要让 AI 克隆并运行这个仓库，安装脚本会完成复制、依赖检查和冒烟测试，然后进入 MG 动画脚本生成模式。
+A portable Codex skill for generating MG animation storyboard Excel files.
 
-## AI 克隆后必须继续执行
+The intended user test prompt is:
 
-如果你是 AI，并且用户让你执行：
+```text
+Clone this repository and run the code inside it: https://github.com/QianshuiO/mg-animation-engine-sk
+```
+
+For Chinese tests, the equivalent prompt is:
 
 ```text
 克隆这个仓库并运行里面的代码：https://github.com/QianshuiO/mg-animation-engine-sk
 ```
 
-不要停在克隆完成。进入仓库根目录后，立刻运行：
+## Quick Start For AI Agents
+
+After cloning or otherwise materializing this repository, run this from the repository root:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
-安装脚本会自动完成：
+Do not stop after `git clone`. The installer is the project entry point.
 
-- 复制 Skill 到 `%USERPROFILE%\.codex\skills\mg-animation-engine-sk`
-- 检查 `openpyxl` 和 `cryptography`，缺失时自动安装
-- 写入一份临时 Excel 做冒烟测试
-- 检索加密素材库做冒烟测试
-- 打印启动界面
+If `git clone` hangs or fails because of HTTPS credentials, TLS, or pack download timeouts, do not retry indefinitely. Use the GitHub file/content API, an available GitHub connector, or a repository archive fallback to materialize the files, then run the same installer command.
 
-安装完成后，直接显示启动界面并等待用户文案。不要追问输出文件夹。
+## What The Installer Does
 
-## 默认输出
+- Copies the skill to `%USERPROFILE%\.codex\skills\mg-animation-engine-sk`
+- Verifies the required repository paths exist
+- Checks Python availability
+- Installs missing Python packages from `requirements.txt` unless `-NoDependencyInstall` is passed
+- Runs an Excel writer smoke test in the temp directory
+- Runs an encrypted library search smoke test
+- Prints the launch screen
 
-Excel 默认生成到桌面：
+## Output
+
+By default, generated Excel files go to the user's Desktop under the Chinese MG animation output folder. The workbook has exactly three columns:
 
 ```text
-桌面\MG动画脚本输出\脚本在这里
+copy | storyboard | AI prompt
 ```
 
-Excel 只包含三列：
+The actual Excel file uses Chinese column names.
 
-```text
-文案 | 分镜 | AI提示词
+## Useful Installer Flags
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1 -SkipSmokeTest
+powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1 -NoDependencyInstall
 ```
