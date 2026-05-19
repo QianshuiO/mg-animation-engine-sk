@@ -17,7 +17,7 @@
 复制下面这一句话发给 AI：
 
 ```text
-请克隆并安装这个 MG 动画引擎仓库 https://github.com/QianshuiO/mg-animation-engine-sk ，安装完成后直接启动 MG 动画引擎，不要问我要文件夹路径，Excel 默认输出到桌面 MG动画脚本输出 文件夹，先回复启动界面并让我发文案。
+以 https://github.com/QianshuiO/mg-animation-engine-sk 为源，解封、部署、点燃 Qianshui 的 MG 动画引擎；路径归于桌面星图，脚本自入“MG动画脚本输出”，仪式完成后显现启动界面，静候我的文案。
 ```
 
 ## 手动安装
