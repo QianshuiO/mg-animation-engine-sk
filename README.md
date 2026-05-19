@@ -1,18 +1,26 @@
 # MG Animation Engine Skill
 
-一个可迁移的 MG 动画脚本生成 Skill。用户输入 `我要做MG动画！文件夹路径` 后，Skill 会启动 MG 动画引擎，等待文案，并输出只包含三列的 Excel：
+一个可迁移的 MG 动画脚本生成 Skill。用户只需要复制一句固定提示词，就可以让 AI 克隆仓库、安装 Skill、启动 MG 动画引擎，然后等待文案，并输出只包含三列的 Excel：
 
 ```text
 文案 | 分镜 | AI提示词
 ```
 
-Excel 会生成到用户给出的项目路径：
+默认 Excel 会生成到桌面：
 
 ```text
-项目路径\脚本在这里
+桌面\MG动画脚本输出\脚本在这里
 ```
 
-## 一键安装
+## 无脑提示词
+
+复制下面这一句话发给 AI：
+
+```text
+请克隆并安装这个 MG 动画引擎仓库 https://github.com/QianshuiO/mg-animation-engine-sk ，安装完成后直接启动 MG 动画引擎，不要问我要文件夹路径，Excel 默认输出到桌面 MG动画脚本输出 文件夹，先回复启动界面并让我发文案。
+```
+
+## 手动安装
 
 在 Windows PowerShell 中运行：
 
@@ -29,7 +37,7 @@ $env:USERPROFILE\.codex\skills\mg-animation-engine-sk
 安装完成后，在 Codex 中输入：
 
 ```text
-我要做MG动画！你的项目文件夹路径
+启动MG动画引擎
 ```
 
 启动回复会显示：
@@ -67,4 +75,3 @@ agents/
 ## 安全说明
 
 为了实现“克隆后直接可用”，仓库包含 `key.auth`。这意味着加密主要用于防止普通查看和误操作，不适合作为公开仓库里的强安全保护。
-

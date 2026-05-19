@@ -1,6 +1,6 @@
 ﻿---
 name: mg-animation-engine
-description: Use when the user says "我要做MG动画！" with a folder path, or asks to turn Chinese copy into an MG animation Excel storyboard. The skill uses the bundled encrypted db folder next to this SKILL.md and outputs an Excel file with only 文案、分镜、AI提示词.
+description: Use when the user asks to install/start the MG animation engine from the GitHub repository, says "启动MG动画引擎", "我要做MG动画", or asks to turn Chinese copy into an MG animation Excel storyboard. The skill uses the bundled encrypted db folder next to this SKILL.md and outputs an Excel file with only 文案、分镜、AI提示词.
 ---
 
 # MG Animation Engine
@@ -9,10 +9,12 @@ description: Use when the user says "我要做MG动画！" with a folder path, o
 
 ## 启动方式
 
-当用户输入：
+当用户输入以下任意意思时启动：
 
 ```text
-我要做MG动画！文件夹路径
+启动MG动画引擎
+我要做MG动画
+请克隆并安装 https://github.com/QianshuiO/mg-animation-engine-sk，然后启动 MG 动画引擎
 ```
 
 先回复下面这段，不要生成 Excel：
@@ -28,13 +30,14 @@ description: Use when the user says "我要做MG动画！" with a folder path, o
 把你的文案发我
 ```
 
-记住用户给出的文件夹路径，作为本次项目输出目录。用户随后发来文案后，再开始生成脚本。
+用户随后发来文案后，再开始生成脚本。不要要求用户提供项目文件夹路径；如果用户没有明确指定路径，使用默认输出目录。
 
 ## 路径规则
 
 - RAG 资料库固定从当前 Skill 目录解析：`SKILL.md 所在目录/db`。
 - 授权密钥固定从当前 Skill 目录解析：`SKILL.md 所在目录/key.auth`。
-- Excel 输出到：`用户给出的文件夹路径/脚本在这里`。
+- Excel 默认输出到：`用户桌面/MG动画脚本输出/脚本在这里`。
+- 如果用户明确指定项目文件夹，则输出到：`用户给出的文件夹路径/脚本在这里`。
 - 如果 `脚本在这里` 不存在，生成 Excel 时自动创建。
 - 任何地方都不要写死 `C:\Users\XU\...` 这类绝对路径，保证复制整个 `sk` 文件夹到另一台电脑后仍可使用。
 
@@ -75,6 +78,12 @@ python scripts/search_obsidian_mg.py --query "用户文案里的核心词 视觉
 整理出三列数据后，调用：
 
 ```bash
+python scripts/write_mg_excel.py --title-source "用户文案开头或主题" --rows-json "rows.json"
+```
+
+如果用户明确指定了项目文件夹，再使用：
+
+```bash
 python scripts/write_mg_excel.py --project "用户给出的文件夹路径" --title-source "用户文案开头或主题" --rows-json "rows.json"
 ```
 
@@ -103,7 +112,7 @@ Excel 写入成功后，必须在对话里告诉用户脚本 Excel 的完整路�
 把你的文案发我
 ```
 
-这表示本次 MG 动画引擎保持开启状态。用户之后只需要直接发送新的文案，就继续使用上一次的项目文件夹路径生成新的 Excel 脚本；不要要求用户重新输入“我要做MG动画！文件夹路径”，除非用户明确想切换输出文件夹。
+这表示本次 MG 动画引擎保持开启状态。用户之后只需要直接发送新的文案，就继续使用默认输出目录或上一次明确指定的项目文件夹生成新的 Excel 脚本；不要要求用户重新输入启动语或文件夹路径，除非用户明确想切换输出文件夹。
 
 ## 质量检查
 

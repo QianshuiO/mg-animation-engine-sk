@@ -54,14 +54,21 @@ def load_rows(path: str) -> list[dict[str, str]]:
     return cleaned
 
 
+def default_project_dir() -> Path:
+    desktop = Path.home() / "Desktop"
+    if desktop.exists():
+        return desktop / "MG动画脚本输出"
+    return Path.home() / "MG动画脚本输出"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--project", required=True, help="User project folder path.")
+    parser.add_argument("--project", default="", help="User project folder path. Defaults to Desktop/MG动画脚本输出.")
     parser.add_argument("--title-source", default="", help="Copy opening or topic used to name the Excel file.")
     parser.add_argument("--rows-json", required=True, help="Path to rows JSON, or - for stdin.")
     args = parser.parse_args()
 
-    project = Path(args.project).expanduser().resolve()
+    project = Path(args.project).expanduser().resolve() if args.project else default_project_dir().resolve()
     output_dir = project / "脚本在这里"
     output_dir.mkdir(parents=True, exist_ok=True)
 
