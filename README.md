@@ -8,12 +8,6 @@ The intended user test prompt is:
 Clone this repository and run the code inside it: https://github.com/QianshuiO/mg-animation-engine-sk
 ```
 
-For Chinese tests, the equivalent prompt is:
-
-```text
-克隆这个仓库并运行里面的代码：https://github.com/QianshuiO/mg-animation-engine-sk
-```
-
 ## Quick Start For AI Agents
 
 After cloning or otherwise materializing this repository, run this from the repository root:
