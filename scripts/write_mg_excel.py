@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write a three-column MG animation storyboard Excel file."""
+"""Write an MG animation director storyboard Excel file."""
 
 from __future__ import annotations
 
@@ -14,7 +14,28 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
 
-COLUMNS = ["\u6587\u6848", "\u5206\u955c", "AI\u63d0\u793a\u8bcd"]
+COLUMNS = [
+    "\u955c\u53f7",
+    "\u65f6\u957f",
+    "\u539f\u6587/\u65c1\u767d",
+    "RAG\u53c2\u8003",
+    "\u753b\u9762\u8bbe\u8ba1",
+    "\u955c\u5934\u8fd0\u52a8/\u8f6c\u573a",
+    "\u5c4f\u5e55\u6587\u5b57",
+    "AI\u63d0\u793a\u8bcd",
+]
+
+LEGACY_COLUMNS = ["\u6587\u6848", "\u5206\u955c", "AI\u63d0\u793a\u8bcd"]
+COLUMN_WIDTHS = {
+    "A": 8,
+    "B": 10,
+    "C": 34,
+    "D": 24,
+    "E": 42,
+    "F": 30,
+    "G": 24,
+    "H": 62,
+}
 
 
 def sanitize_filename(text: str, fallback: str = "MG\u52a8\u753b\u811a\u672c") -> str:
@@ -40,7 +61,26 @@ def load_rows(path: str) -> list[dict[str, str]]:
     rows = json.loads(data)
     if not isinstance(rows, list):
         raise SystemExit("rows-json must contain a JSON array.")
-    return [{col: str(item.get(col, "")).strip() for col in COLUMNS} for item in rows]
+    normalized = []
+    for idx, item in enumerate(rows, 1):
+        if not isinstance(item, dict):
+            raise SystemExit("Each row must be a JSON object.")
+        row = {
+            "\u955c\u53f7": str(item.get("\u955c\u53f7", "") or f"{idx:02d}").strip(),
+            "\u65f6\u957f": str(item.get("\u65f6\u957f", "")).strip(),
+            "\u539f\u6587/\u65c1\u767d": str(item.get("\u539f\u6587/\u65c1\u767d", "") or item.get("\u6587\u6848", "")).strip(),
+            "RAG\u53c2\u8003": str(item.get("RAG\u53c2\u8003", "")).strip(),
+            "\u753b\u9762\u8bbe\u8ba1": str(item.get("\u753b\u9762\u8bbe\u8ba1", "") or item.get("\u5206\u955c", "")).strip(),
+            "\u955c\u5934\u8fd0\u52a8/\u8f6c\u573a": str(item.get("\u955c\u5934\u8fd0\u52a8/\u8f6c\u573a", "")).strip(),
+            "\u5c4f\u5e55\u6587\u5b57": str(item.get("\u5c4f\u5e55\u6587\u5b57", "")).strip(),
+            "AI\u63d0\u793a\u8bcd": str(item.get("AI\u63d0\u793a\u8bcd", "")).strip(),
+        }
+        if any(item.get(col) for col in LEGACY_COLUMNS) and not item.get("RAG\u53c2\u8003"):
+            row["RAG\u53c2\u8003"] = "\u57fa\u7840\u63a8\u5bfc"
+        if any(item.get(col) for col in LEGACY_COLUMNS) and not item.get("\u65f6\u957f"):
+            row["\u65f6\u957f"] = "5s"
+        normalized.append(row)
+    return normalized
 
 
 def default_project_dir() -> Path:
@@ -64,10 +104,10 @@ def main() -> int:
     if not rows:
         raise SystemExit("No rows to write.")
 
-    output_path = unique_path(output_dir, sanitize_filename(args.title_source or rows[0].get(COLUMNS[0], "")))
+    output_path = unique_path(output_dir, sanitize_filename(args.title_source or rows[0].get("\u539f\u6587/\u65c1\u767d", "")))
     wb = Workbook()
     ws = wb.active
-    ws.title = "MG\u52a8\u753b\u811a\u672c"
+    ws.title = "\u5236\u4f5c\u5206\u955c\u811a\u672c"
     ws.append(COLUMNS)
     for row in rows:
         ws.append([row.get(col, "") for col in COLUMNS])
@@ -79,13 +119,13 @@ def main() -> int:
         cell.font = header_font
         cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
 
-    for col, width in {"A": 34, "B": 58, "C": 72}.items():
+    for col, width in COLUMN_WIDTHS.items():
         ws.column_dimensions[col].width = width
     for row in ws.iter_rows(min_row=2):
         for cell in row:
             cell.alignment = Alignment(vertical="top", wrap_text=True)
     for idx in range(2, ws.max_row + 1):
-        ws.row_dimensions[idx].height = 84
+        ws.row_dimensions[idx].height = 96
     ws.freeze_panes = "A2"
     ws.auto_filter.ref = f"A1:{get_column_letter(ws.max_column)}{ws.max_row}"
 

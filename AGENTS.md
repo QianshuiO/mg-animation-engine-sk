@@ -26,12 +26,18 @@ Desktop\MG animation script output\scripts here
 
 The actual installer uses the Chinese folder names for that default path.
 
-After the user sends copy, use this skill and the bundled encrypted `db` folder to generate an Excel file with only these three columns:
+After the user sends copy, use this skill and the bundled encrypted `db` folder to generate a director-level Excel storyboard with exactly these eight columns:
 
 ```text
-copy | storyboard | AI prompt
+shot no. | duration | narration | RAG reference | visual design | camera/transition | screen text | AI prompt
 ```
 
-The actual Excel writer uses the Chinese column names.
+The actual Excel writer uses the Chinese column names:
+
+```text
+镜号 | 时长 | 原文/旁白 | RAG参考 | 画面设计 | 镜头运动/转场 | 屏幕文字 | AI提示词
+```
+
+For 2-3 minute training or explainer copy, split into about 24-36 producible shots. Use RAG references from the bundled library for the visual pattern column; write `基础推导` only when no suitable note exists.
 
 After writing the Excel file, tell the user the clickable Excel path and ask them to send the next piece of copy.

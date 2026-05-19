@@ -1,6 +1,6 @@
 # MG Animation Engine Skill
 
-A portable Codex skill for generating MG animation storyboard Excel files.
+A portable Codex skill for generating director-level MG animation storyboard Excel files.
 
 The intended user test prompt is:
 
@@ -32,13 +32,20 @@ If `git clone` hangs or fails because of HTTPS credentials, TLS, or pack downloa
 
 ## Output
 
-By default, generated Excel files go to the user's Desktop under the Chinese MG animation output folder. The workbook has exactly three columns:
+By default, generated Excel files go to the user's Desktop under the Chinese MG animation output folder. The workbook is an 8-column production storyboard:
 
 ```text
-copy | storyboard | AI prompt
+shot no. | duration | narration | RAG reference | visual design | camera/transition | screen text | AI prompt
 ```
 
 The actual Excel file uses Chinese column names.
+
+The skill is tuned for production-ready director storyboards:
+
+- 60-90 second policy videos usually use 12-22 shots.
+- 2-3 minute training/explainer videos usually use 24-36 shots.
+- Each main shot should bind to a reusable RAG visual pattern when possible.
+- The Excel writer still accepts the old three-column smoke-test JSON and maps it into the new 8-column schema.
 
 ## Useful Installer Flags
 

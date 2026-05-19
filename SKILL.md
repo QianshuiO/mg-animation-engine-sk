@@ -1,11 +1,11 @@
-﻿---
+---
 name: mg-animation-engine
-description: Use when the user asks to install/start the MG animation engine from the GitHub repository, says "启动MG动画引擎", "我要做MG动画", or asks to turn Chinese copy into an MG animation Excel storyboard. The skill uses the bundled encrypted db folder next to this SKILL.md and outputs an Excel file with only 文案、分镜、AI提示词.
+description: Use when the user asks to install/start the MG animation engine from the GitHub repository, says "启动MG动画引擎", "我要做MG动画", or asks to turn Chinese policy, training, performance, aviation, management, or corporate explainer copy into a production-ready MG animation storyboard Excel. The skill uses the bundled encrypted db folder next to this SKILL.md and outputs an 8-column director storyboard with 镜号、时长、原文/旁白、RAG参考、画面设计、镜头运动/转场、屏幕文字、AI提示词.
 ---
 
 # MG Animation Engine
 
-把用户文案转成可制作的 MG 动画 Excel 脚本。必须使用本 Skill 同目录下的 `db` 资料库；不要使用任何写死的电脑绝对路径。
+把用户文案转成可制作的 MG 动画导演级 Excel 分镜脚本。必须使用本 Skill 同目录下的 `db` 资料库；不要使用任何写死的电脑绝对路径。
 
 ## 启动方式
 
@@ -41,6 +41,44 @@ description: Use when the user asks to install/start the MG animation engine fro
 - 如果 `脚本在这里` 不存在，生成 Excel 时自动创建。
 - 任何地方都不要写死 `C:\Users\XU\...` 这类绝对路径，保证复制整个 `sk` 文件夹到另一台电脑后仍可使用。
 
+## 导演逻辑
+
+先判断文案类型，再决定拆镜节奏。
+
+### 政策宣贯型
+
+适用于改革机制、组织行动、绩效分配、责任链条、价值兑现、制度说明、项目推进类文案。
+
+结构公式：
+
+1. 机构/主题/IP 开场。
+2. 编号章节标题卡。
+3. 每个章节按 `目标/问题 -> 机制图解 -> 行动场景 -> 结果强化` 展开。
+4. 使用稳定视觉符号：工作包、任务墙、数据看板、责任链、会议评审、箭头、阶梯、奖章。
+5. 结尾回到组织、使命、团队动员或下期预告。
+
+### 培训科普型
+
+适用于“是什么”“怎么做”“如何定义分解”“常见误区”“管理方法”“分步骤教学”类文案。
+
+结构公式：
+
+1. 用问题或主题引入。
+2. 需要时展示不同角色视角或误区。
+3. 给出本质转折：从概念解释进入流程/方法。
+4. 用编号标题卡拆成步骤。
+5. 每一步按 `标题卡 -> 场景演绎/机制图 -> 操作动作 -> 结果提示` 展开。
+6. 用人物场景承载抽象管理概念：会议研讨、包主负责、评审核定、招募子包主、结果兑现。
+7. 结尾用流程闭环、原则总结或下期预告收束。
+
+### 拆镜粒度
+
+- 60-90 秒政策宣贯片：通常 12-22 镜头。
+- 2-3 分钟培训/科普片：通常 24-36 镜头。
+- 用户给出完整多镜头文案时，优先拆成 24-36 个可剪辑镜头；不要把一整个段落压成一行。
+- 一句里包含两个视觉动作时拆开，例如“定义 + 支撑价值”“规划步骤 + 子步骤”“评审 + 兑现挂钩”。
+- 用章节标题卡作为呼吸点；图解镜头和人物场景交替出现，避免整片像 PPT。
+
 ## RAG 检索
 
 使用：
@@ -59,23 +97,28 @@ python scripts/search_obsidian_mg.py --query "用户文案里的核心词 视觉
 
 ## Excel 输出要求
 
-最终 Excel 只能有三列，列名和顺序固定为：
+最终 Excel 使用导演级 8 列，列名和顺序固定为：
 
 ```text
-文案 | 分镜 | AI提示词
+镜号 | 时长 | 原文/旁白 | RAG参考 | 画面设计 | 镜头运动/转场 | 屏幕文字 | AI提示词
 ```
 
-不得输出镜号、时长、RAG参考、屏幕文字、备注、音效、角色、场景等其它列。
+不得输出备注、音效、角色、场景等其它列。
 
-每一行对应一个可制作镜头或画面段落：
+每一行对应一个可制作、可剪辑的镜头：
 
-- `文案`：保留用户原意，可按镜头轻分段，不要随意改写。
-- `分镜`：写清画面元素、人物/图标、构图、运动、转场和节奏。
+- `镜号`：两位数，如 `01`、`02`。
+- `时长`：建议 3s-7s，标题卡 3s-4s，复杂机制图 5s-7s。
+- `原文/旁白`：保留用户原意，可按镜头轻分段，不要随意改写。
+- `RAG参考`：填写最匹配的资料库条目标题或类别，如 `会议室场景-多人研讨`、`多级审批-金字塔层级`、`数据看板-多图表组合`；无合适条目时写 `基础推导`。
+- `画面设计`：写清画面元素、人物/图标、构图和观众如何理解。
+- `镜头运动/转场`：写入场、强调、退出、推拉、连线绘制、卡片弹出等动作。
+- `屏幕文字`：只写短标签，尽量 2-8 个字，多个标签用 `/` 分隔。
 - `AI提示词`：中文，适合图像或视频生成，包含 16:9、企业培训 MG、蓝白干净背景、扁平矢量商务人物、构图、短标签、负面约束。
 
 ## Excel 生成
 
-整理出三列数据后，调用：
+整理出 8 列数据后，调用：
 
 ```bash
 python scripts/write_mg_excel.py --title-source "用户文案开头或主题" --rows-json "rows.json"
@@ -90,7 +133,16 @@ python scripts/write_mg_excel.py --project "用户给出的文件夹路径" --ti
 其中 `rows.json` 是数组，每项只包含：
 
 ```json
-{"文案": "...", "分镜": "...", "AI提示词": "..."}
+{
+  "镜号": "01",
+  "时长": "4s",
+  "原文/旁白": "...",
+  "RAG参考": "...",
+  "画面设计": "...",
+  "镜头运动/转场": "...",
+  "屏幕文字": "...",
+  "AI提示词": "..."
+}
 ```
 
 文件名由脚本根据文案自动生成；如果重名，会自动加 `_2`、`_3`。
@@ -120,9 +172,12 @@ Excel 写入成功后，必须在对话里告诉用户脚本 Excel 的完整路�
 
 - 每个抽象概念都有明确视觉载体。
 - 分镜不是简单复述文案，而是能指导制作。
+- 2-3 分钟培训片拆成 24-36 镜头，不能过度合并段落。
+- 每个主要镜头都绑定 RAG 参考或明确写 `基础推导`。
+- 图解镜头、人物演绎、标题卡、数据看板要交替使用。
+- `屏幕文字` 短而准，不写整句旁白。
 - AI提示词不堆长段文字，不要求画面出现大段屏幕字。
 - 风格统一为企业 MG、干净蓝白、扁平矢量，除非用户明确要求别的风格。
-- Excel 只有 `文案`、`分镜`、`AI提示词` 三列。
-
+- Excel 只有 `镜号`、`时长`、`原文/旁白`、`RAG参考`、`画面设计`、`镜头运动/转场`、`屏幕文字`、`AI提示词` 八列。
 
 
