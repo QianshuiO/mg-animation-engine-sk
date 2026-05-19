@@ -1,6 +1,6 @@
 # MG Animation Engine Skill
 
-一个可迁移的 MG 动画脚本生成 Skill。用户只需要复制一句固定提示词，就可以让 AI 克隆仓库、安装 Skill、启动 MG 动画引擎，然后等待文案，并输出只包含三列的 Excel：
+一个可迁移的 MG 动画脚本生成 Skill。用户只需要复制一句固定提示词，让 AI 克隆这个仓库；仓库内已封装安装、默认输出路径、启动回复和后续文案生成流程。
 
 ```text
 文案 | 分镜 | AI提示词
@@ -12,13 +12,15 @@
 桌面\MG动画脚本输出\脚本在这里
 ```
 
-## 无脑提示词
+## 固定提示词
 
 复制下面这一句话发给 AI：
 
 ```text
-以 https://github.com/QianshuiO/mg-animation-engine-sk 为源，解封、部署、点燃 Qianshui 的 MG 动画引擎；路径归于桌面星图，脚本自入“MG动画脚本输出”，仪式完成后显现启动界面，静候我的文案。
+克隆这个仓库：https://github.com/QianshuiO/mg-animation-engine-sk
 ```
+
+AI 克隆仓库后，应按本 README 执行 `install.ps1`，安装完成后自动启动 MG 动画引擎，不再追问文件夹路径。
 
 ## 手动安装
 

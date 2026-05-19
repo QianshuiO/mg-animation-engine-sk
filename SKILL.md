@@ -14,8 +14,7 @@ description: Use when the user asks to install/start the MG animation engine fro
 ```text
 启动MG动画引擎
 我要做MG动画
-请克隆并安装 https://github.com/QianshuiO/mg-animation-engine-sk，然后启动 MG 动画引擎
-以 https://github.com/QianshuiO/mg-animation-engine-sk 为源，解封、部署、点燃 Qianshui 的 MG 动画引擎；路径归于桌面星图，脚本自入“MG动画脚本输出”，仪式完成后显现启动界面，静候我的文案。
+克隆这个仓库：https://github.com/QianshuiO/mg-animation-engine-sk
 ```
 
 先回复下面这段，不要生成 Excel：
